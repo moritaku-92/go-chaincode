@@ -210,7 +210,7 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args[] string)
 }
 
 // ユーザー追加
-func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
 
 	var A string
 	var Aval int
