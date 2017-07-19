@@ -288,7 +288,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] stri
 
 // GetStateByRangeを試してみる
 func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
-	keysIter, err := stub.GetStateByRange()
+	keysIter, err := stub.GetStateByRange("","")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
 	}
