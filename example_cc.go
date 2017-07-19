@@ -17,15 +17,14 @@ import (
 var logger = shim.NewLogger("example_cc0")
 
 // SimpleChaincode example simple Chaincode implementation
-type SimpleChaincode struct {
-}
+type SimpleChaincode struct {}
 
 // 初期化処理
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response  {
+func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### example_cc0 Init ###########")
 
 	_, args := stub.GetFunctionAndParameters()
-	var A, B string    // 2名のユーザ
+	var A, B string // 2名のユーザ
 	var Aval, Bval int // 2つの値
 	var err error
 
@@ -47,12 +46,12 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response  {
 	logger.Info("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// 実際に値の書込
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+	err = stub.PutState(B, [] byte(strconv.Itoa(Bval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -63,12 +62,14 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response  {
 }
 
 // お金のやり取りを記載
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### example_cc0 Invoke ###########")
 
 	function, args := stub.GetFunctionAndParameters()
-	
-	if function != "invoke" {
+
+	if
+
+	function != "invoke" {
 		return shim.Error("Unknown function call")
 	}
 
@@ -105,11 +106,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Error(fmt.Sprintf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0]))
 }
 
-func (t *SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
 	// must be an invoke
-	var A, B string    // Entities
+	var A, B string // Entities
 	var Aval, Bval int // Asset holdings
-	var X int          // Transaction value
+	var X int // Transaction value
 	var err error
 
 	if len(args) != 4 {
@@ -149,21 +150,21 @@ func (t *SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	logger.Infof("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+	err = stub.PutState(B, [] byte(strconv.Itoa(Bval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-        return shim.Success(nil);
+	return shim.Success(nil);
 }
 
 // Deletes an entity from state
-func (t *SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -180,7 +181,7 @@ func (t *SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 }
 
 // Query callback representing the query of a chaincode
-func (t *SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
 
 	var A string // Entities
 	var err error
@@ -209,8 +210,8 @@ func (t *SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string)
 }
 
 // ユーザー追加
-func (t *SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	
+func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+
 	var A string
 	var Aval int
 	var err error
@@ -237,7 +238,7 @@ func (t *SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	// 実際に値の書込
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -246,8 +247,8 @@ func (t *SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 }
 
 // お金あげるやつ
-func (t *SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	
+func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+
 	var A string
 	var Aval int
 	var err error
@@ -275,12 +276,37 @@ func (t *SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	}
 	Aval = Aval + X
 
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	return shim.Success(nil)
+}
+
+// GetStateByRangeを試してみる
+func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+	keysIter, err := stub.GetStateByRange()
+	if err != nil {
+		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
+	}
+	defer keysIter.Close()
+	var keys[] string
+	for keysIter.HasNext() {
+		response,
+		iterErr := keysIter.Next()
+		if iterErr != nil {
+			return shim.Error(fmt.Sprintf("query operation failed. Error accessing state: %s", err))
+		}
+		keys = append(keys, response.Key)
+	}
+
+	jsonKeys, err := json.Marshal(keys)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("query operation failed. Error marshaling JSON: %s", err))
+	}
+
+	return shim.Success(jsonKeys)
 }
 
 func main() {
