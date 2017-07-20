@@ -1,5 +1,5 @@
 /*
-スキルグループ様にサンプルのchaincodeを改造
+スキルグループ用にサンプルのchaincodeを改造
 
 */
 
@@ -108,7 +108,7 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Error(fmt.Sprintf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0]))
 }
 
-func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	// must be an invoke
 	var A, B string // Entities
 	var Aval, Bval int // Asset holdings
@@ -152,12 +152,12 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args[] string) 
 	logger.Infof("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
-	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	err = stub.PutState(B, [] byte(strconv.Itoa(Bval)))
+	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -166,7 +166,7 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args[] string) 
 }
 
 // Deletes an entity from state
-func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -183,7 +183,7 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args[] string
 }
 
 // Query callback representing the query of a chaincode
-func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	var A string // Entities
 	var err error
@@ -212,7 +212,7 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args[] string)
 }
 
 // ユーザー追加
-func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	var A string
 	var Aval int
@@ -240,7 +240,7 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args[] strin
 	}
 
 	// 実際に値の書込
-	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -249,7 +249,7 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args[] strin
 }
 
 // お金あげるやつ
-func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	var A string
 	var Aval int
@@ -278,7 +278,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] stri
 	}
 	Aval = Aval + X
 
-	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -287,7 +287,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args[] stri
 }
 
 // GetStateByRangeを試してみる
-func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args[] string) pb.Response {
+func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	keysIter, err := stub.GetStateByRange("","")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
