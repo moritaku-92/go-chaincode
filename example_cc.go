@@ -114,12 +114,12 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	var X int // Transaction value
 	var err error
 
-	if len(args) != 4 {
+	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 4, function followed by 2 names and 1 value")
 	}
 
-	A = args[1]
-	B = args[2]
+	A = args[0]
+	B = args[1]
 
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
@@ -142,7 +142,7 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	Bval, _ = strconv.Atoi(string(Bvalbytes))
 
 	// Perform the execution
-	X, err = strconv.Atoi(args[3])
+	X, err = strconv.Atoi(args[2])
 	if err != nil {
 		return shim.Error("Invalid transaction amount, expecting a integer value")
 	}
@@ -170,7 +170,7 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	A := args[1]
+	A := args[0]
 
 	// Delete the key from the state in ledger
 	err := stub.DelState(A)
@@ -187,11 +187,11 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string)
 	var A string // Entities
 	var err error
 
-	if len(args) != 2 {
+	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
 	}
 
-	A = args[1]
+	A = args[0]
 
 	// Get the state from the ledger
 	Avalbytes, err := stub.GetState(A)
@@ -217,13 +217,13 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	var Aval int
 	var err error
 
-	if len(args) != 3 {
+	if len(args) != 2 {
 		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
 	}
 
 	// 引数が正しいか判定
-	A = args[1]
-	Aval, err = strconv.Atoi(args[2])
+	A = args[0]
+	Aval, err = strconv.Atoi(args[1])
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
@@ -255,12 +255,12 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	var err error
 	var X int
 
-	if len(args) != 3 {
+	if len(args) != 2 {
 		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
 	}
 
 	// 引数が正しいか判定
-	A = args[1]
+	A = args[0]
 	Avalbytes, err := stub.GetState(A)
 	if err != nil {
 		return shim.Error("Failed to get state")
@@ -271,7 +271,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	Aval, _ = strconv.Atoi(string(Avalbytes))
 
 	// Perform the execution
-	X, err = strconv.Atoi(args[2])
+	X, err = strconv.Atoi(args[1])
 	if err != nil {
 		return shim.Error("Invalid transaction amount, expecting a integer value")
 	}
