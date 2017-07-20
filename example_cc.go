@@ -103,6 +103,11 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return t.addUser(stub, args)
 	}
 
+	// range test
+	if fn == "range" {
+		return t.range(stub, args)
+	}
+
 	logger.Errorf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0])
 	return shim.Error(fmt.Sprintf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0]))
 }
@@ -286,7 +291,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 }
 
 // GetStateByRangeを試してみる
-func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func(t * SimpleChaincode) range(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	keysIter, err := stub.GetStateByRange("","")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
@@ -306,6 +311,8 @@ func(t * SimpleChaincode) GetStateByRange(stub shim.ChaincodeStubInterface, args
 	if err != nil {
 		return shim.Error(fmt.Sprintf("query operation failed. Error marshaling JSON: %s", err))
 	}
+
+	fmt.Println(jsonKeys)
 
 	return shim.Success(jsonKeys)
 }
