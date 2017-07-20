@@ -74,16 +74,6 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	function, args := stub.GetFunctionAndParameters()
 
-	if
-
-	function != "invoke" {
-		return shim.Error("Unknown function call")
-	}
-
-	if len(args) < 2 {
-		return shim.Error("Incorrect number of arguments. Expecting at least 2")
-	}
-
 	// keyの削除
 	if args[0] == "delete" {
 		return t.delete(stub, args)
