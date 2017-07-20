@@ -74,8 +74,8 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	_, args := stub.GetFunctionAndParameters()
 
-	fmt.printf("invoke now!!!!")
-	fmt.printf(args[0])
+	fmt.Println("invoke now!!!!")
+	fmt.Println(args[0])
 
 	// keyの削除
 	if args[0] == "delete" {
