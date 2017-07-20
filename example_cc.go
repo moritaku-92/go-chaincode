@@ -72,7 +72,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### example_cc0 Invoke ###########")
 
-	function, args := stub.GetFunctionAndParameters()
+	_, args := stub.GetFunctionAndParameters()
 
 	// keyの削除
 	if args[0] == "delete" {
