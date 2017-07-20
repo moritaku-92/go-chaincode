@@ -72,33 +72,34 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### example_cc0 Invoke ###########")
 
-	_, args := stub.GetFunctionAndParameters()
+	fn, args := stub.GetFunctionAndParameters()
 
 	fmt.Println("invoke now!!!!")
+	fmt.Println(fn)
 	fmt.Println(args[0])
 
 	// keyの削除
-	if args[0] == "delete" {
+	if fn == "delete" {
 		return t.delete(stub, args)
 	}
 
 	// valueの取得
-	if args[0] == "query" {
+	if fn == "query" {
 		return t.query(stub, args)
 	}
 
 	// お金の移動
-	if args[0] == "move" {
+	if fn == "move" {
 		return t.move(stub, args)
 	}
 
 	// お金の追加
-	if args[0] == "addMoney" {
+	if fn == "addMoney" {
 		return t.addMoney(stub, args)
 	}
 
 	// ユーザーを追加する
-	if args[0] == "addUser" {
+	if fn == "addUser" {
 		return t.addUser(stub, args)
 	}
 
