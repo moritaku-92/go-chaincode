@@ -25,10 +25,15 @@ type SimpleChaincode struct {}
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### example_cc0 Init ###########")
 
-	_, args := stub.GetFunctionAndParameters()
+	args := stub.GetStringArgs()
 	var A, B string // 2名のユーザ
 	var Aval, Bval int // 2つの値
 	var err error
+
+	fmt.Println("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
+	length := len(args)
+	x := string(length)
+	fmt.Println(x)
 
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
@@ -48,12 +53,12 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// 実際に値の書込
-	err = stub.PutState(A, [] byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	err = stub.PutState(B, [] byte(strconv.Itoa(Bval)))
+	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
