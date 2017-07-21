@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"bytes"
 
-	"encoding/json"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -301,7 +300,7 @@ func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface) pb.Respons
 	}
 	defer keysIter.Close()
 	
-	vbArrayMemberAlreadyWritten := false
+	bArrayMemberAlreadyWritten := false
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	for keysIter.HasNext() {
