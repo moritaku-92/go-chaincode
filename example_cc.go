@@ -330,7 +330,7 @@ func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface) pb.Respons
 	fmt.Println(buffer)
 	fmt.Println(buffer.Bytes())
 
-	return shim.Success(buffer)
+	return shim.Success(buffer.Bytes())
 }
 
 func main() {
