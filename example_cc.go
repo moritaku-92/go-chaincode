@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"bytes"
 
 	"encoding/json"
 
@@ -30,7 +31,6 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	var Aval, Bval int // 2つの値
 	var err error
 
-	fmt.Println("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-")
 	length := len(args)
 	x := string(length)
 	fmt.Println(x)
@@ -105,7 +105,7 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// range test
 	if fn == "rangeTest" {
-		return t.rangeTest(stub, args)
+		return t.rangeTest(stub)
 	}
 
 	logger.Errorf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0])
@@ -291,38 +291,47 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 }
 
 // GetStateByRangeを試してみる
-func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("1111111111")
 	
-	keysIter, err := stub.GetStateByRange("a","z")
+	keysIter, err := stub.GetStateByRange("","")
 	
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
 	}
-	fmt.Println("2222222222")
 	defer keysIter.Close()
-	var keys []string
+	
+	vbArrayMemberAlreadyWritten := false
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
 	for keysIter.HasNext() {
-		response,
-		iterErr := keysIter.Next()
-		if iterErr != nil {
-			return shim.Error(fmt.Sprintf("query operation failed. Error accessing state: %s", err))
+		queryResponse, err := keysIter.Next()
+		if err != nil {
+			return shim.Error(err.Error())
 		}
-		keys = append(keys, response.Key)
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
 	}
+	buffer.WriteString("]")
 
 	fmt.Println("3333333333")
 
-	jsonKeys, err := json.Marshal(keys)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("query operation failed. Error marshaling JSON: %s", err))
-	}
+	fmt.Println(buffer)
+	fmt.Println(buffer.Bytes())
 
-	fmt.Println(jsonKeys)
-
-	fmt.Println("4444444444")
-
-	return shim.Success(jsonKeys)
+	return shim.Success(buffer)
 }
 
 func main() {
