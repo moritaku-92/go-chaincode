@@ -42,7 +42,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
-	logger.Info("Aval = " + Aval + " Bval =" + Bval)
+	logger.Info("Aval = ", Aval ," Bval = ", Bval)
 
 	// 実際に値の書込
 	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
