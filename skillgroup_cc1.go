@@ -228,7 +228,7 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
-	logger.Info("Aval = " + Aval)
+	logger.Info("Aval = ", Aval)
 
 	// 既存ユーザでないか判定
 	Avalbytes, err := stub.GetState(A)
@@ -256,8 +256,6 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	var Aval int
 	var err error
 	var X int
-
-	fmt
 
 	if len(args) != 2 {
 		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
