@@ -243,7 +243,7 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	logger.info(A, "=", Aval)
+	logger.Info(A, "=", Aval)
 
 	return shim.Success(nil)
 }
@@ -284,7 +284,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 		return shim.Error(err.Error())
 	}
 
-	logger.info(A, "=", Aval)
+	logger.Info(A, "=", Aval)
 
 	return shim.Success(nil)
 }
