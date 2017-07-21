@@ -42,7 +42,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
-	logger.Info("Aval = ", Aval ," Bval = ", Bval)
+	logger.Info( A, "=", Aval, B, "=", Bval)
 
 	// 実際に値の書込
 	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
@@ -147,7 +147,7 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	}
 	Aval = Aval - X
 	Bval = Bval + X
-	logger.Infof("Aval = %d, Bval = %d\n", Aval, Bval)
+	logger.Info( A, "=", Aval, B, "=", Bval)
 
 	// Write the state back to the ledger
 	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
@@ -228,7 +228,6 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
-	logger.Info("Aval = ", Aval)
 
 	// 既存ユーザでないか判定
 	Avalbytes, err := stub.GetState(A)
@@ -244,6 +243,7 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+	logger.info(A, "=", Aval)
 
 	return shim.Success(nil)
 }
@@ -283,6 +283,8 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+
+	logger.info(A, "=", Aval)
 
 	return shim.Success(nil)
 }
