@@ -106,6 +106,7 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 
 
+// ユーザ間のお金受け渡し
 func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### move ###########")
 	var A, B string // Entities
@@ -163,7 +164,7 @@ func(t * SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	return shim.Success(nil);
 }
 
-// Deletes an entity from state
+// ユーザの削除
 func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### delete ###########")
 	if len(args) != 1 {
@@ -181,7 +182,7 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 	return shim.Success(nil)
 }
 
-// Query callback representing the query of a chaincode
+// 現在値の取得
 func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### query ###########")
 	var A string // Entities
@@ -248,7 +249,8 @@ func(t * SimpleChaincode) addUser(stub shim.ChaincodeStubInterface, args []strin
 	return shim.Success(nil)
 }
 
-// お金あげるやつ
+
+// 指定したユーザにお金あげる
 func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### add money ###########")
 
@@ -289,6 +291,7 @@ func(t * SimpleChaincode) addMoney(stub shim.ChaincodeStubInterface, args []stri
 	return shim.Success(nil)
 }
 
+
 // GetStateByRangeを試してみる
 func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### range ###########")
@@ -300,6 +303,7 @@ func(t * SimpleChaincode) rangeTest(stub shim.ChaincodeStubInterface) pb.Respons
 	}
 	defer keysIter.Close()
 	
+	// ここでjsonをつくる
 	bArrayMemberAlreadyWritten := false
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
