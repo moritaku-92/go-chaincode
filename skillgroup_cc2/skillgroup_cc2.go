@@ -32,7 +32,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
 }
 
-// invoke処理 functionによって行う処理を変えるß
+// invoke処理 functionによって行う処理を変える
 func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc2 Invoke ###########")
 	
@@ -86,18 +86,23 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	/*
 		jsonの形どうしよう…？
 		正しいjsonか判定してたら大変…
+		ccで判定入れるか、RestServerで判定入れるか…?
 	*/
 	/*
 		{
-			"任務者":"a",
-			"受領有無":0,
+			"依頼者":"a",
+			"受領有無":true,
 			"任務内容":"○○○買ってこいや",
 			"報酬":10000,
 			"受注者":""
 		}
 	*/
 
-	// クエスト番号設定
+	// 任務番号設定
+	count, err := stub.GetState("count")
+	if err != nil {
+		return shim.Error(err.Error())
+	}
 	quest := "quest" + count
 
 	// 任務の登録
@@ -118,13 +123,18 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 // 任務削除
 func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### delete ###########")
+	
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
 	// 任務番号がきている想定{quest{N}}
 	A := args[0]
-	// 番号が正しいか判定入れる？
+	// ユーザ名があるか確認
+	_, err := shim.GetState(A)
+	if err != nil {
+		return shim.Error("No Mission")
+	}
 
 	// 任務削除
 	err := stub.DelState(A)
