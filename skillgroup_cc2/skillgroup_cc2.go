@@ -11,12 +11,22 @@ import (
 	"bytes"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
+	"encoding/json"
 )
 
 var logger = shim.NewLogger("skill group cc2")
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {}
+
+// 依頼内容の構造体を定義
+type Mission struct{
+	Requester string 'json:"requester"'
+	Acceptance bool 'json:"acceptance"'
+	MissionContent string 'json:"missionContent"'
+	Compensation int 'json:"compensation"'
+	Contractor string 'json:"contractor"'
+}
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
@@ -147,6 +157,29 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 
 // 任務受注
 func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	
+	// 依頼番号
+	missionNo := args[0]
+	// 依頼番号があるか判定？
+
+	// 依頼者
+	receiveUser := args[1]
+	// 登録ユーザか判定？→cc1に問合せないといけないか？
+
+	// 依頼内容取得
+	mission, err := stub.GetState(missionNo)
+	if err != nil {
+		return shim.Error("No Misiion")
+	}
+
+	// 登録
+	err = stub.PutState(missionNo, []byte(strconv.Itoa(A)))
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+
+
 	return shim.Success(nil)
 }
 
