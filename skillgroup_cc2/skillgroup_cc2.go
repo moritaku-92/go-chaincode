@@ -21,18 +21,33 @@ type SimpleChaincode struct {}
 
 // 依頼内容の構造体を定義
 type Mission struct{
+	// 依頼者
 	Requester string 'json:"requester"'
+	// 受領有無
 	Acceptance bool 'json:"acceptance"'
+	// 任務内容
 	MissionContent string 'json:"missionContent"'
+	// 報酬
 	Compensation int 'json:"compensation"'
+	// 受注者
 	Contractor string 'json:"contractor"'
+}
+
+// 共同購入の構造体
+type Purchase struct{
+	// 依頼者
+	// 何買う
+	// いくらで？
+	// 達成人数
+	// 申込者→jsonで持たせたい
+	// 申込者数
 }
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc1 Init ###########")
 
-	// カウンタ設定
+	// カウンタの設定 任務番号を管理する
 	err = stub.PutState("count", []byte(strconv.Itoa(0)))
 	if err != nil {
 		return shim.Error(err.Error())
@@ -89,26 +104,21 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
+	// 受け取るjson
+	// ["request","依頼者","任務内容","報酬"]
 
-	// 受け取ったjson
-	A := args[0]
-
-	/*
-		jsonの形どうしよう…？
-		正しいjsonか判定してたら大変…
-		ccで判定入れるか、RestServerで判定入れるか…?
-	*/
-	/*
-		{
-			"依頼者":"a",
-			"受領有無":true,
-			"任務内容":"○○○買ってこいや",
-			"報酬":10000,
-			"受注者":"",
-			"受注者数":"1",
-			"受注者達成人数":"",
-		}
-	*/
+	// 任務のjson作成
+	var mission []Mission
+	mission.Requester = args[0]
+	mission.Acceptance = false
+	mission.MissionContent = args[1]
+	mission.Compensation = args[2]
+	mission.Contractor = nil
+	// ここでjson化
+	missionJson, err := json.Marshal(&mission)
+	if err != nil {
+		return shim.Error("任務のjson化失敗したわ")
+	}
 
 	// 任務番号設定
 	count, err := stub.GetState("count")
@@ -118,7 +128,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	quest := "quest" + count
 
 	// 任務の登録
-	err = stub.PutState(count, []byte(strconv.Itoa(A)))
+	err = stub.PutState(count, missionJson)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -140,16 +150,19 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	// 任務番号がきている想定{quest{N}}
-	A := args[0]
-	// ユーザ名があるか確認
-	_, err := shim.GetState(A)
+	// 受け取るjson
+	// ["delete","任務番号"]
+
+	// 任務番号がきている想定
+	missinoNo := args[0]
+	// 任務番号があるか判定
+	_, err := shim.GetState(missinoNo)
 	if err != nil {
-		return shim.Error("No Mission")
+		return shim.Error("その任務番号はないで")
 	}
 
 	// 任務削除
-	err := stub.DelState(A)
+	err := stub.DelState(missinoNo)
 	if err != nil {
 		return shim.Error("Failed to delete state")
 	}
@@ -160,27 +173,43 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 // 任務受注
 func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	
+	// もらうjsonイメージ
+	// ["receive","依頼番号","受注者"]
+
 	// 依頼番号
 	missionNo := args[0]
-	// 依頼番号があるか判定？
+	// 依頼内容取得
+	missionCon, err := stub.GetState(missionNo)
+	if err != nil {
+		// 番号がなければエラーを返す
+		return shim.Error("その任務番号はないで")
+	}
 
 	// 依頼者
 	receiveUser := args[1]
 	// 登録ユーザか判定？→cc1に問合せないといけないか？
 
-	// 依頼内容取得
-	mission, err := stub.GetState(missionNo)
+	// 取得したvalueからjsonを取得し値を取得したい
+	// 受注者の登録
+	mission := json.Newdecoder(missionCon)
+	var missionJson []Mission
+	mission.decode(&missionJson)
+	missionJson.Contractor = receiveUser
+	missionJson.Acceptance = true
+
+	// jsonエンコード
+	outputJson, err := json.Marshal(&missionJson)
 	if err != nil {
-		return shim.Error("No Misiion")
+		return shim.Error("json化できなかった")
 	}
 
+	// 取得したvalueからjsonを取得し値を取得したいここまで
+
 	// 登録
-	err = stub.PutState(missionNo, []byte(strconv.Itoa(A)))
+	err = stub.PutState(missionNo, []byte(strconv.Itoa(outputJson)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-
-
 
 	return shim.Success(nil)
 }
