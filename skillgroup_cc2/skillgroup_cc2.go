@@ -104,7 +104,9 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 			"受領有無":true,
 			"任務内容":"○○○買ってこいや",
 			"報酬":10000,
-			"受注者":""
+			"受注者":"",
+			"受注者数":"1",
+			"受注者達成人数":"",
 		}
 	*/
 
