@@ -125,7 +125,7 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// 任務一覧取得
 	if fn == "query" {
-		return t.query(stub, args)
+		return t.query(stub)
 	}
 
 
@@ -179,6 +179,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error(err.Error())
 	}
 
+	// 返却値は要相談
 	return shim.Success(nil)
 }
 
@@ -350,8 +351,40 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 }
 
 // 任務一覧取得
-func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
+	logger.Info("########### query ###########")
+
+	keysIter, err := stub.GetStateByRange("q","q")
+	if err != nil {
+		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
+	}
+	defer keysIter.Close()
+	
+	// ここでjsonをつくる
+	bArrayMemberAlreadyWritten := false
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	for keysIter.HasNext() {
+		queryResponse, err := keysIter.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\":")
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+
+	return shim.Success(buffer.Bytes())
 }
 
 func main() {
