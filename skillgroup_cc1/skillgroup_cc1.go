@@ -173,14 +173,14 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 
 	A := args[0]
 	// ユーザ名があるか確認
-	_, err1 := stub.GetState(A)
-	if err1 != nil {
+	_, err := stub.GetState(A)
+	if err != nil {
 		return shim.Error("No user name")
 	}
 
 	// Delete the key from the state in ledger
-	err2 := stub.DelState(A)
-	if err2 != nil {
+	err = stub.DelState(A)
+	if err != nil {
 		return shim.Error("Failed to delete state")
 	}
 
