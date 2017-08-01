@@ -72,8 +72,8 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	fmt.Printf(count)
-	quest := "quest" + count
+	fmt.Printf(string(count)
+	quest := "quest" + string(count)
 
 	// 任務の登録
 	err = stub.PutState(quest, missionJSON)
@@ -147,12 +147,18 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error("Incorrect number of arguments. Expecting 3")
 	}
 
+	// 文字列をint化する
+	compensation, err = strconv.Atoi(args[2])
+	if err != nil {
+		return shim.Error("int型じゃない")
+	}
+
 	// 任務のjson作成
 	var mission = Mission{}
 	mission.Requester = args[0]
 	mission.Acceptance = false
 	mission.MissionContent = args[1]
-	mission.Compensation = args[2]
+	mission.Compensation = compensation
 	mission.Contractor = ""
 	mission.Compleate = false
 	// ここでjson化
@@ -166,7 +172,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	quest := "quest" + count
+	quest := "quest" + string(count)
 
 	// 任務の登録
 	err = stub.PutState(quest, missionJSON)
@@ -256,7 +262,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, []byte(strconv.Itoa(outputJson)))
+	err = stub.PutState(missionNo, []byte(outputJson))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
