@@ -1,6 +1,18 @@
-CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./go-chaincode
+cc copy → fabric-samples/chaincode
 
-peer chaincode install -p chaincodedev/chaincode/go-chaincode -n mycc -v 0
+cd chaincode-docker-devmode
+
+docker-compose -f docker-compose-simple.yaml up
+
+docker exec -it chaincode bash
+
+cd xxxxx
+
+go build
+
+CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./skillgroup_cc1
+
+peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc1 -n mycc -v 0
 
 peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a","1000","b","20000"]}' -C myc
 
@@ -16,3 +28,9 @@ peer chaincode invoke -n mycc -c '{"Args":["delete", "c"]}' -C myc
 
 peer chaincode invoke -n mycc -c '{"Args":["rangeTest"]}' -C myc
 
+
+
+
+docker-compose -f docker-compose-simple.yaml down
+
+docker stop $(docker ps -q)
