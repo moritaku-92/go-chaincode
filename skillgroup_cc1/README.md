@@ -12,6 +12,8 @@ go build
 
 CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./skillgroup_cc1
 
+docker exec -it cli bash
+
 peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc1 -n mycc -v 0
 
 peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a","1000","b","20000"]}' -C myc
