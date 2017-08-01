@@ -72,7 +72,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	fmt.Printf(string(count)
+	fmt.Printf(string(count))
 	quest := "quest" + string(count)
 
 	// 任務の登録
@@ -148,7 +148,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// 文字列をint化する
-	compensation, err = strconv.Atoi(args[2])
+	compensation, err := strconv.Atoi(args[2])
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
@@ -181,7 +181,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// countの増加
-	_, err = stub.PutState("count", []byte(strconv.Itoa(count+1)))
+	_, err = stub.PutState("count", []byte(strconv.Atoi(count)+1))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
