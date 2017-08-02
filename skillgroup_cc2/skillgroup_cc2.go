@@ -49,7 +49,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc1 Init ###########")
 
 	// カウンタの設定 任務番号を管理する
-	err := stub.PutState("count", []byte(strconv.Itoa(0)))
+	err := stub.PutState("count", []byte(strconv.Itoa(1)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -72,11 +72,11 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	fmt.Printf(string(count))
+	countInt := string(count)
 	quest := "quest" + string(count)
 
-	fmt.Printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-	fmt.Printf(quest)
+	fmt.Println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	fmt.Println(quest)
 
 	// 任務の登録
 	err = stub.PutState(quest, missionJSON)
@@ -89,8 +89,8 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	fmt.Printf("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-	fmt.Printf(string(result))
+	fmt.Println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+	fmt.Println(string(result))
 
 
 	// ------------------test mission end------------------
