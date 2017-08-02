@@ -181,7 +181,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// countの増加
-	countInt := strconv.Atoi(count) +1
+	countInt, err = strconv.Atoi(count) +1
 	_, err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
 	if err != nil {
 		return shim.Error(err.Error())
@@ -249,7 +249,10 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 
 	// 任務を取得し構造体にぶっ込む
 	var mission = Mission{}
-	_ := json.Unmarshal(missionCon, &mission)
+	err0 := json.Unmarshal(missionCon, &mission)
+	if err0 != nil {
+		return shim.Error("構造体にぶっ込めんかった")
+	}
 
 	// 受注者の登録
 	mission.Contractor = receiveUser
@@ -293,7 +296,10 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 
 	// 任務を取得し構造体にぶっ込む
 	var mission = Mission{}
-	_ := json.Unmarshal(missionCon, &mission)
+	err0 := json.Unmarshal(missionCon, &mission)
+	if err0 != nil {
+		return shim.Error("構造体にぶっ込めんかった")
+	}
 
 	// 任務の取り消し
 	mission.Contractor = ""
