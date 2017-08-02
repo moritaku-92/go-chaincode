@@ -90,7 +90,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 	fmt.Printf("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-	fmt.Printf(result)
+	fmt.Printf(string(result))
 
 
 	// ------------------test mission end------------------
