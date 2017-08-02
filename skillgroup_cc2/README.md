@@ -18,7 +18,7 @@ peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc2 -n 
 
 peer chaincode instantiate -n mycc2 -v 0 -c '{"Args":[]}' -C myc
 
-peer chaincode invoke -n mycc2 -c '{"Args":["request", "a"]}' -C myc
+peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "5000兆円欲しい!!!", "100000"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["delete", "c","5000"]}' -C myc
 

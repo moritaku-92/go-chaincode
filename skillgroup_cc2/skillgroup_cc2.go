@@ -54,7 +54,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	// ------------------  test mission------------------
+	/* ------------------  test mission------------------
 	var mission = Mission{}
 	mission.Requester = "Jane Doe"
 	mission.Acceptance = false
@@ -93,7 +93,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println(string(result))
 
 
-	// ------------------test mission end------------------
+	// ------------------test mission end------------------ */
 
 	return shim.Success(nil)
 
