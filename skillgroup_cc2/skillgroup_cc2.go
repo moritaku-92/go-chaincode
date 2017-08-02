@@ -75,11 +75,24 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Printf(string(count))
 	quest := "quest" + string(count)
 
+	fmt.Printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	fmt.Printf(quest)
+
 	// 任務の登録
 	err = stub.PutState(quest, missionJSON)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+
+	// 登録できてるか確認
+	result, err := stub.GetState(quest)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	fmt.Printf("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+	fmt.Printf(result)
+
+
 	// ------------------test mission end------------------
 
 	return shim.Success(nil)
