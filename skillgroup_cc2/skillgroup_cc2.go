@@ -49,7 +49,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc1 Init ###########")
 
 	// カウンタの設定 任務番号を管理する
-	err := stub.PutState("count", 0)
+	err := stub.PutState("count", []byte(strconv.Itoa(0)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -181,7 +181,8 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// countの増加
-	_, err = stub.PutState("count", count+1)
+	countInt = strconv.Atoi(count) +1
+	_, err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -297,7 +298,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	mission.decode(&missionJSON)
 
 	// 任務の取り消し
-	missionJSON.Contractor = nil
+	missionJSON.Contractor = ""
 	missionJSON.Acceptance = false
 
 	// jsonエンコード
@@ -307,7 +308,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, []byte(strconv.Itoa(outputJson)))
+	err = stub.PutState(missionNo, outputJson)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -349,7 +350,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, []byte(strconv.Itoa(outputJson)))
+	err = stub.PutState(missionNo, strconv.Itoa(outputJson)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
