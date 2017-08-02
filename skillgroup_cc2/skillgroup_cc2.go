@@ -182,7 +182,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 
 	// countの増加
 	countInt, err := strconv.Atoi(string(count))
-	_, err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
+	err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
