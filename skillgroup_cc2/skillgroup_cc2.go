@@ -206,7 +206,7 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 	// 任務番号がきている想定
 	missinoNo := args[0]
 	// 任務番号があるか判定
-	_, err1 := shim.GetState(missinoNo)
+	_, err1 := stub.GetState(missinoNo)
 	if err1 != nil {
 		return shim.Error("その任務番号はないで")
 	}
