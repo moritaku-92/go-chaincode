@@ -181,7 +181,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// countの増加
-	countInt = strconv.Atoi(count) +1
+	countInt := strconv.Atoi(count) +1
 	_, err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
 	if err != nil {
 		return shim.Error(err.Error())
@@ -248,16 +248,14 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// 登録ユーザか判定？→cc1に問合せないといけないか？→実装時間的に断念？
 
 	// 任務を取得し構造体にぶっ込む
-	mission := json.Newdecoder(missionCon)
-	var missionJSON = Mission{}
-	mission.decode(&missionJSON)
+	mission := json.Unmarshal(missionCon, &Mission)
 
 	// 受注者の登録
-	missionJSON.Contractor = receiveUser
-	missionJSON.Acceptance = true
+	mission.Contractor = receiveUser
+	mission.Acceptance = true
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&missionJSON)
+	outputJson, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
@@ -293,16 +291,14 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// 任務を取得し構造体にぶっ込む
-	mission := json.Newdecoder(missionCon)
-	var missionJSON = Mission{}
-	mission.decode(&missionJSON)
+	mission := json.Unmarshal(missionCon, &Mission)
 
 	// 任務の取り消し
-	missionJSON.Contractor = ""
-	missionJSON.Acceptance = false
+	mission.Contractor = ""
+	mission.Acceptance = false
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&missionJSON)
+	outputJson, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
@@ -336,21 +332,19 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	// 任務を取得し構造体にぶっ込む
-	mission := json.Newdecoder(missionCon)
-	var missionJSON []Mission
-	mission.decode(&missionJSON)
+	mission := json.Unmarshal(missionCon, &Mission)
 
 	// 任務完了
-	missionJSON.Compleate = true
+	mission.Compleate = true
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&missionJSON)
+	outputJson, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, strconv.Itoa(outputJson)
+	err = stub.PutState(missionNo, strconv.Itoa(outputJson))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
