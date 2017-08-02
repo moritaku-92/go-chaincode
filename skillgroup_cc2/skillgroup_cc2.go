@@ -248,20 +248,21 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// 登録ユーザか判定？→cc1に問合せないといけないか？→実装時間的に断念？
 
 	// 任務を取得し構造体にぶっ込む
-	mission := json.Unmarshal(missionCon, &Mission)
+	var mission = Mission{}
+	_ := json.Unmarshal(missionCon, &mission)
 
 	// 受注者の登録
 	mission.Contractor = receiveUser
 	mission.Acceptance = true
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&mission)
+	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, []byte(outputJson))
+	err = stub.PutState(missionNo, []byte(outputJSON))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -291,20 +292,21 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// 任務を取得し構造体にぶっ込む
-	mission := json.Unmarshal(missionCon, &Mission)
+	var mission = Mission{}
+	_ := json.Unmarshal(missionCon, &mission)
 
 	// 任務の取り消し
 	mission.Contractor = ""
 	mission.Acceptance = false
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&mission)
+	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, outputJson)
+	err = stub.PutState(missionNo, outputJSON)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -338,13 +340,13 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	mission.Compleate = true
 
 	// jsonエンコード
-	outputJson, err := json.Marshal(&mission)
+	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
 		return shim.Error("json化できなかった")
 	}
 
 	// 登録
-	err = stub.PutState(missionNo, strconv.Itoa(outputJson))
+	err = stub.PutState(missionNo, strconv.Itoa(outputJSON))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
