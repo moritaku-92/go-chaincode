@@ -18,7 +18,7 @@ peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc2 -n 
 
 peer chaincode instantiate -n mycc2 -v 0 -c '{"Args":[]}' -C myc
 
-peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "I want 5000 trillion yen!", "100000"]}' -C myc
+peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "I'm hungry!", "50"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["delete", "quest1"]}' -C myc
 
@@ -26,7 +26,7 @@ peer chaincode invoke -n mycc2 -c '{"Args":["receive", "quest0", "Mr.Satan"]}' -
 
 peer chaincode invoke -n mycc2 -c '{"Args":["cancel", "quest0"]}' -C myc
 
-peer chaincode invoke -n mycc2 -c '{"Args":["complete", "c"]}' -C myc
+peer chaincode invoke -n mycc2 -c '{"Args":["complete", "quest0"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["query"]}' -C myc
 
@@ -36,3 +36,6 @@ peer chaincode invoke -n mycc2 -c '{"Args":["query"]}' -C myc
 docker-compose -f docker-compose-simple.yaml down
 
 docker stop $(docker ps -q)
+
+メモ      
+登録する内容は日本語不可
