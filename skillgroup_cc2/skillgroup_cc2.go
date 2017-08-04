@@ -58,7 +58,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	var mission = Mission{}
 	mission.Requester = "Jane Doe"
 	mission.Acceptance = false
-	mission.MissionContent = "5000兆円欲しい!!!"
+	mission.MissionContent = "I want 5000 trillion yen!"
 	mission.Compensation = 100000
 	mission.Contractor = ""
 	mission.Compleate = false
@@ -337,6 +337,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 
 // 任務完了
 func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	logger.Info("########### complete ###########")
 	// 受け取るargs
 	// ["依頼番号"]
 	// ["quest8"]
@@ -384,7 +385,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### query ###########")
 
-	keysIter, err := stub.GetStateByRange("q","q")
+	keysIter, err := stub.GetStateByRange("","")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
 	}
