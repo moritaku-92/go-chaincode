@@ -54,7 +54,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	/* ------------------  test mission------------------
+	------------------  test mission------------------
 	var mission = Mission{}
 	mission.Requester = "Jane Doe"
 	mission.Acceptance = false
@@ -67,7 +67,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error("任務のjson化失敗したわー")
 	}
-
+	/*
 	count, err := stub.GetState("count")
 	if err != nil {
 		return shim.Error(err.Error())
@@ -77,9 +77,10 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
 	fmt.Println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	fmt.Println(quest)
+	*/
 
 	// 任務の登録
-	err = stub.PutState(quest, missionJSON)
+	err = stub.PutState("quest0", missionJSON)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -93,7 +94,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println(string(result))
 
 
-	// ------------------test mission end------------------ */
+	// ------------------test mission end------------------ 
 
 	return shim.Success(nil)
 
