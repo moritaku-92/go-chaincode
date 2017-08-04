@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strconv"
 	"bytes"
+	// install時にないと言われる
 	"github.com/hyperledger/fabric/common/util"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
