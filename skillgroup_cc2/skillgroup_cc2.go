@@ -197,6 +197,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 
 	// countの増加
 	countInt, err := strconv.Atoi(string(count))
+	countInt = countInt + 1
 	err = stub.PutState("count", []byte(strconv.Itoa(countInt)))
 	if err != nil {
 		return shim.Error(err.Error())
@@ -262,7 +263,6 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	receiveUser := args[1]
 	// 登録ユーザか判定？→cc1に問合せないといけないか？→実装時間的に断念？
 
-	fmt.Println(missionCon)
 
 	// 任務を取得し構造体にぶっ込む
 	var mission = Mission{}
