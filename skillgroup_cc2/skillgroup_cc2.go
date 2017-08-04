@@ -84,7 +84,8 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-
+	
+	/*
 	// 登録できてるか確認
 	result, err := stub.GetState(quest)
 	if err != nil {
@@ -93,7 +94,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 	fmt.Println(string(result))
 
-
+	*/
 	// ------------------test mission end------------------ 
 
 	return shim.Success(nil)
