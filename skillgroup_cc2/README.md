@@ -22,7 +22,7 @@ peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "I want 500
 
 peer chaincode invoke -n mycc2 -c '{"Args":["delete", "c","5000"]}' -C myc
 
-peer chaincode invoke -n mycc2 -c '{"Args":["receive", "a","500"]}' -C myc
+peer chaincode invoke -n mycc2 -c '{"Args":["receive", "quest8", "Mr.Satan"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["cancel", "a","b","500"]}' -C myc
 

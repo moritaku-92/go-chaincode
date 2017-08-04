@@ -263,7 +263,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// 登録ユーザか判定？→cc1に問合せないといけないか？→実装時間的に断念？
 
 	// 任務を取得し構造体にぶっ込む
-	var mission = Mission{}
+	var mission  []Mission
 	err0 := json.Unmarshal(missionCon, &mission)
 	if err0 != nil {
 		return shim.Error("構造体にぶっ込めんかった")
