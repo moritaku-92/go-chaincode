@@ -49,7 +49,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc1 Init ###########")
 
 	// カウンタの設定 任務番号を管理する
-	err := stub.PutState("count", []byte(strconv.Itoa(1)))
+	err := stub.PutState("count", []byte(strconv.Itoa(0)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
