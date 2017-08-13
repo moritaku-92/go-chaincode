@@ -14,6 +14,8 @@ CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc2:0 ./skillgroup_cc2
 
 docker exec -it cli bash
 
+go get -v github.com/hyperledger/fabric/common/util
+
 peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc2 -n mycc2 -v 0
 
 peer chaincode instantiate -n mycc2 -v 0 -c '{"Args":[]}' -C myc
