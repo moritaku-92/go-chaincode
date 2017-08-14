@@ -357,15 +357,17 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 		cc1に報酬を支払う処理を書く
 		json化する前にした方が処理が楽
 	*/
-	invokeArgs := util.ToChaincodeArgs("move", "a", "b", "10")
-	// chaincodeName, json, channel
+	// invokeArgs := util.ToChaincodeArgs("move", "a", "b", "10")
+	invokeArgs := util.ToChaincodeArgs("move", mission.Requester, mission.Contractor, mission.Compensation)
+	
+	// chaincodeName, json, channel で設定する↓
 	response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
+
 	if response.Status != shim.OK {
 		errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
 		fmt.Printf(errStr)
 		return shim.Error(errStr)
 	}
-
 
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)

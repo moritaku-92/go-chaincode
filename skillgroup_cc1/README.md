@@ -36,3 +36,10 @@ peer chaincode invoke -n mycc -c '{"Args":["rangeTest"]}' -C myc
 docker-compose -f docker-compose-simple.yaml down
 
 docker stop $(docker ps -q)
+
+
+test code 
+
+peer chaincode invoke -n mycc -c '{"Args":["nozawa", "c","1000"]}' -C myc
+
+peer chaincode invoke -n mycc -c '{"Args":["mori", "c","2000"]}' -C myc

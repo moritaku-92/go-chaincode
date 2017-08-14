@@ -20,7 +20,7 @@ peer chaincode install -p chaincodedev/chaincode/go-chaincode/skillgroup_cc2 -n 
 
 peer chaincode instantiate -n mycc2 -v 0 -c '{"Args":[]}' -C myc
 
-peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "I'm hungry!", "50"]}' -C myc
+peer chaincode invoke -n mycc2 -c '{"Args":["request", "John Smith", "I am hungry", "50"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["delete", "quest1"]}' -C myc
 
@@ -41,3 +41,13 @@ docker stop $(docker ps -q)
 
 メモ      
 登録する内容は日本語不可
+
+
+
+test code
+
+peer chaincode invoke -n mycc2 -c '{"Args":["request", "nozawa", "I want a coke", "50"]}' -C myc
+
+peer chaincode invoke -n mycc2 -c '{"Args":["receive", "quest1", "mori"]}' -C myc
+
+peer chaincode invoke -n mycc2 -c '{"Args":["complete", "quest1"]}' -C myc
