@@ -53,27 +53,27 @@ docker stop $(docker ps -q)
 
 ### invokeに対して投げるjson
 
-* 任務追加
-    {"Args":["request", "UserName", "Mission", "Amount"]}
+* 任務追加      
+    {"Args":["request", "UserName", "Mission", "Amount"]}       
     ex) {"Args":["request", "John Smith", "I am hungry", "50"]}
 
-* 任務削除
-    {"Args":["delete", "QuestNumber"]}
+* 任務削除      
+    {"Args":["delete", "QuestNumber"]}      
     ex) {"Args":["delete", "quest1"]}
 
-* 任務受領
-    {"Args":["receive", "QuestNumber", "UserName"]}
+* 任務受領      
+    {"Args":["receive", "QuestNumber", "UserName"]}     
     ex) {"Args":["receive", "quest0", "Mr.Satan"]}
 
-* 任務取消
-    {"Args":["cancel", "QuestNumber"]}
+* 任務取消      
+    {"Args":["cancel", "QuestNumber"]}      
     ex) {"Args":["cancel", "quest0"]}
 
-* 任務完了
-    {"Args":["complete", "QuestNumber"]}
+* 任務完了      
+    {"Args":["complete", "QuestNumber"]}        
     ex) {"Args":["complete", "quest0"]}
 
-* 任務一覧取得
+* 任務一覧取得        
     {"Args":["query"]}
     ex) {"Args":["query"]}
 

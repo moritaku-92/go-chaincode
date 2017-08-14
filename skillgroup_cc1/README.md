@@ -48,24 +48,24 @@ docker stop $(docker ps -q)
 
 ### invokeに対して投げるjson
 
-* ユーザの所持金額確認  
+* ユーザの所持金額確認    
     {"Args":["query", "UserName"]}  
     ex) {"Args":["query", "tanake"]}
 
-* 送金
-    {"Args":["move", "UserNameA","UserNameB","Amount"]}
+* 送金    
+    {"Args":["move", "UserNameA","UserNameB","Amount"]}     
     ex) {"Args":["move", "a","b","500"]}
 
-* お金の付与
-    {"Args":["addMoney", "UserName","Amount"]}
+* お金の付与     
+    {"Args":["addMoney", "UserName","Amount"]}      
     ex) {"Args":["addMoney", "a","500"]}
 
-* ユーザの追加
-    {"Args":["addUser", "UserName","Amount"]}
+* ユーザの追加    
+    {"Args":["addUser", "UserName","Amount"]}   
     ex) {"Args":["addUser", "c","5000"]}
 
-* ユーザの削除
-    {"Args":["delete", "UserName"]}
+* ユーザの削除    
+    {"Args":["delete", "UserName"]}     
     ex) {"Args":["delete", "c"]}
 
 ## test code 
