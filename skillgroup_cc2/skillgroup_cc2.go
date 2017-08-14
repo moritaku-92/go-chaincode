@@ -358,7 +358,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 		json化する前にした方が処理が楽
 	*/
 	// invokeArgs := util.ToChaincodeArgs("move", "a", "b", "10")
-	invokeArgs := util.ToChaincodeArgs("move", mission.Requester, mission.Contractor, mission.Compensation)
+	invokeArgs := util.ToChaincodeArgs("move", mission.Requester, mission.Contractor, strconv.Itoa(mission.Compensation))
 	
 	// chaincodeName, json, channel で設定する↓
 	response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
