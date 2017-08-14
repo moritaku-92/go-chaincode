@@ -1,3 +1,5 @@
+# memo
+
 cc copy → fabric-samples/chaincode
 
 cd chaincode-docker-devmode
@@ -44,7 +46,7 @@ docker stop $(docker ps -q)
 
 
 
-test code
+# test code
 
 peer chaincode invoke -n mycc2 -c '{"Args":["request", "nozawa", "I want a coke", "50"]}' -C myc
 

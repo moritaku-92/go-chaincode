@@ -1,3 +1,5 @@
+# memo
+
 cc copy → fabric-samples/chaincode
 
 cd chaincode-docker-devmode
@@ -6,7 +8,7 @@ docker-compose -f docker-compose-simple.yaml up
 
 docker exec -it chaincode bash
 
-cd xxxxx
+cd go-chaincode/skillgroup_cc1/
 
 go build
 
@@ -38,8 +40,8 @@ docker-compose -f docker-compose-simple.yaml down
 docker stop $(docker ps -q)
 
 
-test code 
+# test code 
 
-peer chaincode invoke -n mycc -c '{"Args":["nozawa", "c","1000"]}' -C myc
+peer chaincode invoke -n mycc -c '{"Args":["addUser", "nozawa","1000"]}' -C myc
 
-peer chaincode invoke -n mycc -c '{"Args":["mori", "c","2000"]}' -C myc
+peer chaincode invoke -n mycc -c '{"Args":["addUser", "mori", "2000"]}' -C myc
