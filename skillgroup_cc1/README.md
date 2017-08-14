@@ -1,4 +1,7 @@
-# memo
+# お金のをやり取りするchaincode
+keyにユーザ名、valueに所持金額を保存するchaincodeです。  
+
+## memo
 
 cc copy → fabric-samples/chaincode
 
@@ -28,6 +31,8 @@ peer chaincode invoke -n mycc -c '{"Args":["addMoney", "a","500"]}' -C myc
 
 peer chaincode invoke -n mycc -c '{"Args":["move", "a","b","500"]}' -C myc
 
+peer chaincode invoke -n mycc -c '{"Args":["addUser", "c","5000"]}' -C myc
+
 peer chaincode invoke -n mycc -c '{"Args":["delete", "c"]}' -C myc
 
 peer chaincode invoke -n mycc -c '{"Args":["rangeTest"]}' -C myc
@@ -39,8 +44,31 @@ docker-compose -f docker-compose-simple.yaml down
 
 docker stop $(docker ps -q)
 
+## json定義
 
-# test code 
+### invokeに対して投げるjson
+
+* ユーザの所持金額確認  
+    {"Args":["query", "UserName"]}  
+    ex) {"Args":["query", "tanake"]}
+
+* 送金
+    {"Args":["move", "UserNameA","UserNameB","Amount"]}
+    ex) {"Args":["move", "a","b","500"]}
+
+* お金の付与
+    {"Args":["addMoney", "UserName","Amount"]}
+    ex) {"Args":["addMoney", "a","500"]}
+
+* ユーザの追加
+    {"Args":["addUser", "UserName","Amount"]}
+    ex) {"Args":["addUser", "c","5000"]}
+
+* ユーザの削除
+    {"Args":["delete", "UserName"]}
+    ex) {"Args":["delete", "c"]}
+
+## test code 
 
 peer chaincode invoke -n mycc -c '{"Args":["addUser", "nozawa","1000"]}' -C myc
 
