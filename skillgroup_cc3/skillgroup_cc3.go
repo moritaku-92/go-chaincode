@@ -127,7 +127,11 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// 文字列をint化する
-	compensation, err := strconv.Atoi(args[2])
+	price, err := strconv.Atoi(args[2])
+	if err != nil {
+		return shim.Error("int型じゃない")
+	}
+	foud, err := strconv.Atoi(args[3])
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
@@ -136,9 +140,9 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	var purchase = Purchase{}
 	purchase.Requester = args[0]
 	purchase.Wish = args[1]
-	purchase.Price = args[2]
+	purchase.Price = price
 	purchase.Contractores = [args[0]]
-	purchase.Foud = args[3]
+	purchase.Foud = foud
 	purchase.Compleate = false
 	// ここでjson化
 	purchaseJSON, err := json.Marshal(&purchase)
@@ -187,14 +191,14 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 	// 依頼番号がきている想定
 	groupPurchaseNo := args[0]
 	// 依頼番号があるか判定
-	_, err1 := stub.GetState(groupPurchaseNo)
-	if err1 != nil {
+	_, err := stub.GetState(groupPurchaseNo)
+	if err != nil {
 		return shim.Error("その番号はないで")
 	}
 
 	// 依頼削除
-	err2 := stub.DelState(groupPurchaseNo)
-	if err2 != nil {
+	err = stub.DelState(groupPurchaseNo)
+	if err != nil {
 		return shim.Error("Failed to delete state")
 	}
 
@@ -229,20 +233,35 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 
 	// 依頼を取得し構造体にぶっ込む
 	var purchase = Purchase{}
-	err0 := json.Unmarshal(groupPurchase, &purchase)
-	if err0 != nil {
+	err = json.Unmarshal(groupPurchase, &purchase)
+	if err != nil {
 		return shim.Error("構造体にぶっ込めんかった")
 	}
 
 	// 受注者の登録
 	// ダメだったらappend(入れる先, 入れる値)
-	purchase.Contractores = append(receiveUser)
+	purchase.Contractores = append(purchase.Contractores, receiveUser)
+	// purchase.Contractores = append(receiveUser)
 	
 	// ---------------達成判定---------------
 	// 判定文
+	if purchase.fund = len(purchase.Contractores) {
 		// for文（受注者数分回す）
+		dif := purchase.Price*(-1)
+		for i, user := range purchase.Contractores {
 			// 価格分引く
+			invokeArgs := util.ToChaincodeArgs("addMoney", user, strconv.Itoa(dif))
+			response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
+
+			if response.Status != shim.OK {
+				errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
+				fmt.Printf(errStr)
+				return shim.Error(errStr)
+			}
+		}
 		// 登録内容を完了にする
+		purchase.Compleate = true
+	}
 	// ---------------達成判定---------------
 
 	// jsonエンコード
