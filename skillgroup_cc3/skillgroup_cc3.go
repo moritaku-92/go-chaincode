@@ -54,8 +54,8 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	purchase.Requester = "Jane Doe"
 	purchase.Wish = "AYATAKA"
 	purchase.Price = 10
-	purchase.Contractores = ["Jane Doe"]
-	purchase.Foud = 2
+	purchase.Contractores = append(purchase.Contractores, "Jane Doe")
+	purchase.Fund = 2
 	mission.Compleate = false
 
 	purchaseJSON, err := json.Marshal(&purchase)
@@ -131,7 +131,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
-	foud, err := strconv.Atoi(args[3])
+	Fund, err := strconv.Atoi(args[3])
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
@@ -141,8 +141,8 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	purchase.Requester = args[0]
 	purchase.Wish = args[1]
 	purchase.Price = price
-	purchase.Contractores = [args[0]]
-	purchase.Foud = foud
+	purchase.Contractores = append(purchase.Contractores, args[0])
+	purchase.Fund = Fund
 	purchase.Compleate = false
 	// ここでjson化
 	purchaseJSON, err := json.Marshal(&purchase)
