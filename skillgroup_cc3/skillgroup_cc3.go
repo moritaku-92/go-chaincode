@@ -247,7 +247,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	if purchase.Fund == len(purchase.Contractores) {
 		// for文（受注者数分回す）
 		dif := purchase.Price*(-1)
-		for i, user := range purchase.Contractores {
+		for _, user := range purchase.Contractores {
 			// 価格分引く
 			invokeArgs := util.ToChaincodeArgs("addMoney", user, strconv.Itoa(dif))
 			response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
