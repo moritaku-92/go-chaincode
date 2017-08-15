@@ -33,7 +33,7 @@ type Purchase struct{
 	// 受注者←配列にしたい
 	Contractores []string `json:"contractores"`
 	// 達成人数
-	Fund int `json:"found"`
+	Fund int `json:"fund"`
 	// 完了有無
 	Compleate bool `json:"compleate"`
 }
