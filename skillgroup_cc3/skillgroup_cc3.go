@@ -244,8 +244,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	
 	// ---------------達成判定---------------
 	// 判定文
-	leng :=len(purchase.Contractores)
-	if purchase.Fund = leng {
+	if purchase.Fund == len(purchase.Contractores) {
 		// for文（受注者数分回す）
 		dif := purchase.Price*(-1)
 		for i, user := range purchase.Contractores {
