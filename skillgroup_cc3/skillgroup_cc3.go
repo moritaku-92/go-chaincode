@@ -56,7 +56,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	purchase.Price = 10
 	purchase.Contractores = append(purchase.Contractores, "Jane Doe")
 	purchase.Fund = 2
-	mission.Compleate = false
+	purchase.Compleate = false
 
 	purchaseJSON, err := json.Marshal(&purchase)
 	if err != nil {
@@ -245,7 +245,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	
 	// ---------------達成判定---------------
 	// 判定文
-	if purchase.fund = len(purchase.Contractores) {
+	if purchase.Fund = len(purchase.Contractores) {
 		// for文（受注者数分回す）
 		dif := purchase.Price*(-1)
 		for i, user := range purchase.Contractores {
