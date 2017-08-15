@@ -241,11 +241,11 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// 受注者の登録
 	// ダメだったらappend(入れる先, 入れる値)
 	purchase.Contractores = append(purchase.Contractores, receiveUser)
-	// purchase.Contractores = append(receiveUser)
 	
 	// ---------------達成判定---------------
 	// 判定文
-	if purchase.Fund = len(purchase.Contractores) {
+	leng := len(purchase.Contractores)
+	if purchase.Fund = leng {
 		// for文（受注者数分回す）
 		dif := purchase.Price*(-1)
 		for i, user := range purchase.Contractores {
