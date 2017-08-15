@@ -1,5 +1,7 @@
 /*
-スキルグループ用にサンプルのchaincode2を作成
+スキルグループ用のchaincode
+依頼を発行し、依頼が達成されたら依頼者から受注者に報酬が支払われる
+cc1と一緒に使う
 */
 
 package main
@@ -48,7 +50,7 @@ type Purchase struct{
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-	logger.Info("########### skill group cc1 Init ###########")
+	logger.Info("########### skill group cc2 Init ###########")
 
 	// カウンタの設定 任務番号を管理する
 	// テスト任務を入れる関係でcountは1から始めている
