@@ -84,6 +84,6 @@ peer chaincode invoke -n mycc3 -c '{"Args":["receive", "groupPurchase1", "b"]}' 
 peer chaincode invoke -n mycc3 -c '{"Args":["receive", "groupPurchase1", "c"]}' -C myc
 
 
-## responce
+## response
 
 [{\"groupPurchase0\":{\"requester\":\"Jane Doe\",\"wish\":\"AYATAKA\",\"price\":10,\"contractores\":[\"Jane Doe\"],\"fund\":2,\"compleate\":false}},{\"groupPurchase1\":{\"requester\":\"a\",\"wish\":\"Coca Cola\",\"price\":50,\"contractores\":[\"a\",\"b\",\"c\"],\"fund\":3,\"compleate\":true}}]
