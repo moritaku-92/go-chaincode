@@ -24,6 +24,8 @@ type SimpleChaincode struct {}
 
 // 依頼内容の構造体を定義
 type Purchase struct{
+	// 依頼番号
+	Number string `json:"number"`
 	// 依頼者
 	Requester string `json:"requester"`
 	// 欲しい物
@@ -51,6 +53,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// ------------------  test mission------------------
 	var purchase = Purchase{}
+	purchase.number = "groupPurchase0"
 	purchase.Requester = "Jane Doe"
 	purchase.Wish = "AYATAKA"
 	purchase.Price = 10
@@ -139,8 +142,16 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error("達成人数は2人以上")
 	}
 
+	// 依頼番号設定
+	count, err := stub.GetState("count")
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	groupPurchaseNo := "groupPurchase" + string(count)
+
 	// 依頼のjson作成
 	var purchase = Purchase{}
+	purchase.Number = groupPurchaseNo
 	purchase.Requester = args[0]
 	purchase.Wish = args[1]
 	purchase.Price = price
@@ -153,14 +164,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error("json化失敗したわー")
 	}
 
-	// 依頼番号設定
-	count, err := stub.GetState("count")
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	groupPurchaseNo := "groupPurchase" + string(count)
-
-	// 依頼の登録
+		// 依頼の登録
 	err = stub.PutState(groupPurchaseNo, purchaseJSON)
 	if err != nil {
 		return shim.Error(err.Error())
@@ -308,12 +312,12 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		buffer.WriteString("{")
-		buffer.WriteString("\"")
-		buffer.WriteString(queryResponse.Key)
-		buffer.WriteString("\":")
+		// buffer.WriteString("{")
+		// buffer.WriteString("\"")
+		// buffer.WriteString(queryResponse.Key)
+		// buffer.WriteString("\":")
 		buffer.WriteString(string(queryResponse.Value))
-		buffer.WriteString("}")
+		// buffer.WriteString("}")
 		bArrayMemberAlreadyWritten = true
 	}
 	buffer.WriteString("]")

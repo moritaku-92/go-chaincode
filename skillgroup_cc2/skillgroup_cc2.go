@@ -24,6 +24,8 @@ type SimpleChaincode struct {}
 
 // 依頼内容の構造体を定義
 type Mission struct{
+	// 依頼番号
+	Number string `json:"number"`
 	// 依頼者
 	Requester string `json:"requester"`
 	// 受領有無
@@ -61,6 +63,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// ------------------  test mission------------------
 	var mission = Mission{}
+	mission.Number = "quest0"
 	mission.Requester = "Jane Doe"
 	mission.Acceptance = false
 	mission.MissionContent = "I want 5000 trillion yen!"
@@ -152,26 +155,28 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error("int型じゃない")
 	}
 
-	// 任務のjson作成
-	var mission = Mission{}
-	mission.Requester = args[0]
-	mission.Acceptance = false
-	mission.MissionContent = args[1]
-	mission.Compensation = compensation
-	mission.Contractor = ""
-	mission.Compleate = false
-	// ここでjson化
-	missionJSON, err := json.Marshal(&mission)
-	if err != nil {
-		return shim.Error("任務のjson化失敗したわー")
-	}
-
 	// 任務番号設定
 	count, err := stub.GetState("count")
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 	quest := "quest" + string(count)
+
+	// 任務のjson作成
+	var mission = Mission{}
+	mission.Number = quest
+	mission.Requester = args[0]
+	mission.Acceptance = false
+	mission.MissionContent = args[1]
+	mission.Compensation = compensation
+	mission.Contractor = ""
+	mission.Compleate = false
+	
+	// ここでjson化
+	missionJSON, err := json.Marshal(&mission)
+	if err != nil {
+		return shim.Error("任務のjson化失敗したわー")
+	}
 
 	// 任務の登録
 	err = stub.PutState(quest, missionJSON)
@@ -412,12 +417,12 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		buffer.WriteString("{")
-		buffer.WriteString("\"")
-		buffer.WriteString(queryResponse.Key)
-		buffer.WriteString("\":")
+		// buffer.WriteString("{")
+		// buffer.WriteString("\"")
+		// buffer.WriteString(queryResponse.Key)
+		// buffer.WriteString("\":")
 		buffer.WriteString(string(queryResponse.Value))
-		buffer.WriteString("}")
+		// buffer.WriteString("}")
 		bArrayMemberAlreadyWritten = true
 	}
 	buffer.WriteString("]")
