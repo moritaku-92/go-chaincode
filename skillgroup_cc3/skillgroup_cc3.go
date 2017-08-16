@@ -131,9 +131,12 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
-	Fund, err := strconv.Atoi(args[3])
+	fund, err := strconv.Atoi(args[3])
 	if err != nil {
 		return shim.Error("int型じゃない")
+	}
+	if fund <= 1 {
+		return shim.Error("達成人数は2人以上")
 	}
 
 	// 依頼のjson作成
@@ -142,7 +145,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	purchase.Wish = args[1]
 	purchase.Price = price
 	purchase.Contractores = append(purchase.Contractores, args[0])
-	purchase.Fund = Fund
+	purchase.Fund = fund
 	purchase.Compleate = false
 	// ここでjson化
 	purchaseJSON, err := json.Marshal(&purchase)
