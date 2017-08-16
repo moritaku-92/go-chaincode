@@ -1,6 +1,38 @@
 # お金のをやり取りするchaincode
 keyにユーザ名、valueに所持金額を保存するchaincodeです。  
 
+
+## json定義
+
+### invokeに対して投げるjson
+
+* ユーザの所持金額確認    
+    {"Args":["query", "口座名義人"]}  
+    ex) {"Args":["query", "tanake"]}
+
+* 送金    
+    {"Args":["move", "送金元","送金先","金額"]}     
+    ex) {"Args":["move", "a","b","500"]}
+
+* お金の付与     
+    {"Args":["addMoney", "送金先","金額"]}      
+    ex) {"Args":["addMoney", "a","500"]}
+
+* ユーザの追加    
+    {"Args":["addUser", "口座名義人","金額"]}   
+    ex) {"Args":["addUser", "c","5000"]}
+
+* ユーザの削除    
+    {"Args":["delete", "口座名義人"]}     
+    ex) {"Args":["delete", "c"]}
+
+
+### 注意事項
+
+* パラメータは半角英数字のみ許容       
+    日本語不可V
+
+
 ## memo
 
 cc copy → fabric-samples/chaincode
@@ -44,29 +76,6 @@ docker-compose -f docker-compose-simple.yaml down
 
 docker stop $(docker ps -q)
 
-## json定義
-
-### invokeに対して投げるjson
-
-* ユーザの所持金額確認    
-    {"Args":["query", "UserName"]}  
-    ex) {"Args":["query", "tanake"]}
-
-* 送金    
-    {"Args":["move", "UserNameA","UserNameB","Amount"]}     
-    ex) {"Args":["move", "a","b","500"]}
-
-* お金の付与     
-    {"Args":["addMoney", "UserName","Amount"]}      
-    ex) {"Args":["addMoney", "a","500"]}
-
-* ユーザの追加    
-    {"Args":["addUser", "UserName","Amount"]}   
-    ex) {"Args":["addUser", "c","5000"]}
-
-* ユーザの削除    
-    {"Args":["delete", "UserName"]}     
-    ex) {"Args":["delete", "c"]}
 
 ## test code 
 
