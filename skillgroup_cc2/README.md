@@ -99,3 +99,7 @@ peer chaincode invoke -n mycc2 -c '{"Args":["request", "a", "I want a coke", "50
 peer chaincode invoke -n mycc2 -c '{"Args":["receive", "quest1", "b"]}' -C myc
 
 peer chaincode invoke -n mycc2 -c '{"Args":["complete", "quest1"]}' -C myc
+
+## responce
+
+[{\"quest0\":{\"requester\":\"Jane Doe\",\"acceptance\":false,\"missionContent\":\"I want 5000 trillion yen!\",\"compensation\":100000,\"contractor\":\"\",\"compleate\":false}},{\"quest1\":{\"requester\":\"a\",\"acceptance\":true,\"missionContent\":\"I want a coke\",\"compensation\":50,\"contractor\":\"b\",\"compleate\":false}}]
