@@ -82,3 +82,8 @@ docker stop $(docker ps -q)
 peer chaincode invoke -n mycc -c '{"Args":["addUser", "nozawa","1000"]}' -C myc
 
 peer chaincode invoke -n mycc -c '{"Args":["addUser", "mori", "2000"]}' -C myc
+
+## response
+
+{\"Name\":\"a\",\"Amount\":\"1000\"}
+
