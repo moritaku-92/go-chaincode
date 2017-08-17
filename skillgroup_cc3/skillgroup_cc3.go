@@ -53,7 +53,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// ------------------  test mission------------------
 	var purchase = Purchase{}
-	purchase.number = "groupPurchase0"
+	purchase.Number = "groupPurchase0"
 	purchase.Requester = "Jane Doe"
 	purchase.Wish = "AYATAKA"
 	purchase.Price = 10
@@ -116,7 +116,7 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Error(fmt.Sprintf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0]))
 }
 
-// 依頼依頼
+// 依頼
 func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	logger.Info("########### request ###########")
 	
