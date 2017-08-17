@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"strconv"
 	"bytes"
-	// install時にないと言われる
 	"github.com/hyperledger/fabric/common/util"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -40,50 +39,40 @@ type Mission struct{
 	Compleate bool `json:"compleate"`
 }
 
-// 共同購入の構造体
-type Purchase struct{
-	// 依頼者
-	// 何買う
-	// いくらで？
-	// 達成人数
-	// 申込者→jsonで持たせたい
-	// 申込者数
-}
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### skill group cc2 Init ###########")
 
 	// カウンタの設定 任務番号を管理する
-	// テスト任務を入れる関係でcountは1から始めている
+	// テストデータを入れる関係でcountは1から始めている
 	err := stub.PutState("count", []byte(strconv.Itoa(1)))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	// ------------------  test mission------------------
+	// テストデータの作成
 	var mission = Mission{}
 	mission.Number = "quest0"
 	mission.Requester = "Jane Doe"
-	mission.Acceptance = false
+	mission.Acceptance = true
 	mission.MissionContent = "I want 5000 trillion yen!"
-	mission.Compensation = 100000
-	mission.Contractor = ""
-	mission.Compleate = false
+	mission.Compensation = 1000000
+	mission.Contractor = "John Smith"
+	mission.Compleate = true
 
+	// 構造体をjson化
 	missionJSON, err := json.Marshal(&mission)
 	if err != nil {
-		return shim.Error("任務のjson化失敗したわー")
+		return shim.Error("json化失敗したわー")
 	}
 
-	// 任務の登録
+	// テストデータの登録
 	err = stub.PutState("quest0", missionJSON)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	// ------------------  test mission end------------------
-	
 	return shim.Success(nil)
 
 }
@@ -144,7 +133,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	// ["依頼者", "任務内容", "報酬"]
 	// ["John Smith", "5000兆円欲しい!!!", "100000"]
 
-	// 受取ったjsonの長さが正しいか判定
+	// 受取った配列の長さが正しいか判定
 	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 3")
 	}
@@ -309,7 +298,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// 任務の取り消し
-	mission.Contractor = ""
+	mission.Contractor = nil
 	mission.Acceptance = false
 
 	// jsonエンコード
@@ -355,10 +344,6 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	if err0 != nil {
 		return shim.Error("構造体にぶっ込めんかった")
 	}
-
-	// 任務完了
-	mission.Compleate = true
-
 	
 	/*
 		cc1に報酬を支払う処理を書く
@@ -375,6 +360,9 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 		fmt.Printf(errStr)
 		return shim.Error(errStr)
 	}
+
+	// 任務完了
+	mission.Compleate = true
 
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)
@@ -398,6 +386,7 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 	// 受け取るargs
 	// []
 
+	// これが上手いこと指定したkey・valueを取ってきてくれる
 	keysIter, err := stub.GetStateByRange("q","r")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))

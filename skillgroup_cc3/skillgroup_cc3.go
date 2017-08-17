@@ -32,7 +32,7 @@ type Purchase struct{
 	Wish string `json:"wish"`
 	// 価格
 	Price int `json:"price"`
-	// 受注者←配列にしたい
+	// 受注者
 	Contractores []string `json:"contractores"`
 	// 達成人数
 	Fund int `json:"fund"`
@@ -51,15 +51,16 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	// ------------------  test mission------------------
+	// テストデータの作成
 	var purchase = Purchase{}
 	purchase.Number = "groupPurchase0"
-	purchase.Requester = "Jane Doe"
-	purchase.Wish = "AYATAKA"
+	purchase.Requester = "Serval"
+	purchase.Wish = "KEMONO FRIENDS"
 	purchase.Price = 10
-	purchase.Contractores = append(purchase.Contractores, "Jane Doe")
+	purchase.Contractores = append(purchase.Contractores, "Raccoon")
+	purchase.Contractores = append(purchase.Contractores, "Fennec")
 	purchase.Fund = 2
-	purchase.Compleate = false
+	purchase.Compleate = true
 
 	purchaseJSON, err := json.Marshal(&purchase)
 	if err != nil {
@@ -71,11 +72,8 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-
-	// ------------------  test mission end------------------
 	
 	return shim.Success(nil)
-
 }
 
 // invoke処理 functionによって行う処理を変える
@@ -84,7 +82,6 @@ func(t * SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	// 受取るjson
 	// ["function", "args[0]", "args[1]", args[2], ...]
-
 
 	// 受取ったjsonをfunctionと残りのParamに別ける
 	// argsは配列
@@ -138,6 +135,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	if err != nil {
 		return shim.Error("int型じゃない")
 	}
+	// 共同購入なので2人以上を想定
 	if fund <= 1 {
 		return shim.Error("達成人数は2人以上")
 	}
@@ -158,13 +156,14 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	purchase.Contractores = append(purchase.Contractores, args[0])
 	purchase.Fund = fund
 	purchase.Compleate = false
+
 	// ここでjson化
 	purchaseJSON, err := json.Marshal(&purchase)
 	if err != nil {
 		return shim.Error("json化失敗したわー")
 	}
 
-		// 依頼の登録
+	// 依頼の登録
 	err = stub.PutState(groupPurchaseNo, purchaseJSON)
 	if err != nil {
 		return shim.Error(err.Error())
@@ -246,16 +245,16 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// 受注者の登録
-	// ダメだったらappend(入れる先, 入れる値)
 	purchase.Contractores = append(purchase.Contractores, receiveUser)
 	
 	// ---------------達成判定---------------
 	// 判定文
 	if purchase.Fund == len(purchase.Contractores) {
-		// for文（受注者数分回す）
+		// 引く値なのでマイナス化
 		dif := purchase.Price*(-1)
+		// for文（受注者数分回す）
 		for _, user := range purchase.Contractores {
-			// 価格分引く
+			// 価格分引く処理
 			invokeArgs := util.ToChaincodeArgs("addMoney", user, strconv.Itoa(dif))
 			response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
 
@@ -293,6 +292,7 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 	// 受け取るargs
 	// []
 
+	// これが上手いこと指定したkey・valueを取ってきてくれる
 	keysIter, err := stub.GetStateByRange("g","h")
 	if err != nil {
 		return shim.Error(fmt.Sprintf("keys operation failed. Error accessing state: %s", err))
