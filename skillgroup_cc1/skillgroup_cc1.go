@@ -214,7 +214,7 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface, args []string)
 	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
 	logger.Infof("Query Response:%s\n", jsonResp)
 	// return shim.Success(Avalbytes)
-	return shim.Success(jsonResp)
+	return shim.Success([]byte(jsonResp))
 }
 
 // ユーザー追加
