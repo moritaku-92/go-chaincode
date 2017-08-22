@@ -54,12 +54,11 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	// テストデータの作成
 	var purchase = Purchase{}
 	purchase.Number = "groupPurchase0"
-	purchase.Requester = "Serval"
-	purchase.Wish = "KEMONO FRIENDS"
-	purchase.Price = 10
-	purchase.Contractores = append(purchase.Contractores, "Raccoon")
-	purchase.Contractores = append(purchase.Contractores, "Fennec")
-	purchase.Fund = 2
+	purchase.Requester = "Dr. Emmett Brown"
+	purchase.Wish = "I need plutonium for the time machine"
+	purchase.Price = 100000
+	purchase.Contractores = append(purchase.Contractores, "Marty McFly")
+	purchase.Fund = 1
 	purchase.Compleate = true
 
 	purchaseJSON, err := json.Marshal(&purchase)
@@ -153,7 +152,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	purchase.Requester = args[0]
 	purchase.Wish = args[1]
 	purchase.Price = price
-	purchase.Contractores = append(purchase.Contractores, args[0])
+	purchase.Contractores = nil
 	purchase.Fund = fund
 	purchase.Compleate = false
 
@@ -264,6 +263,16 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 				return shim.Error(errStr)
 			}
 		}
+		// 提案者にお金渡す処理
+		add := purchase.Price * purchase.Fund
+		invokeArgs := util.ToChaincodeArgs("addMoney", purchase.Requester, strconv.Itoa(add))
+		response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
+		
+		if response.Status != shim.OK {
+			errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
+			fmt.Printf(errStr)
+			return shim.Error(errStr)
+		}
 		// 登録内容を完了にする
 		purchase.Compleate = true
 	}
@@ -312,12 +321,9 @@ func(t * SimpleChaincode) query(stub shim.ChaincodeStubInterface) pb.Response {
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		// buffer.WriteString("{")
-		// buffer.WriteString("\"")
-		// buffer.WriteString(queryResponse.Key)
-		// buffer.WriteString("\":")
+		
 		buffer.WriteString(string(queryResponse.Value))
-		// buffer.WriteString("}")
+		
 		bArrayMemberAlreadyWritten = true
 	}
 	buffer.WriteString("]")
