@@ -36,7 +36,7 @@ type Mission struct{
 	// 受注者
 	Contractor string `json:"contractor"`
 	// 完了有無 → 完了したら任務自体削除するか要確認
-	Complete bool `json:"Complete"`
+	Complete bool `json:"complete"`
 }
 
 

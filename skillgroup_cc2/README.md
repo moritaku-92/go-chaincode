@@ -102,4 +102,4 @@ peer chaincode invoke -n mycc2 -c '{"Args":["complete", "quest1"]}' -C myc
 
 ## response
 
-[{\"number\":\"quest0\",\"requester\":\"Jane Doe\",\"acceptance\":false,\"missionContent\":\"I want 5000 trillion yen!\",\"compensation\":100000,\"contractor\":\"\",\"Complete\":false},{\"number\":\"quest1\",\"requester\":\"a\",\"acceptance\":true,\"missionContent\":\"I want a coke\",\"compensation\":50,\"contractor\":\"b\",\"Complete\":true},{\"number\":\"quest2\",\"requester\":\"c\",\"acceptance\":false,\"missionContent\":\"i want 5000 trillion yen\",\"compensation\":50,\"contractor\":\"\",\"Complete\":false}]
+[{\"number\":\"quest0\",\"requester\":\"Jane Doe\",\"acceptance\":false,\"missionContent\":\"I want 5000 trillion yen!\",\"compensation\":100000,\"contractor\":\"\",\"complete\":false},{\"number\":\"quest1\",\"requester\":\"a\",\"acceptance\":true,\"missionContent\":\"I want a coke\",\"compensation\":50,\"contractor\":\"b\",\"complete\":true},{\"number\":\"quest2\",\"requester\":\"c\",\"acceptance\":false,\"missionContent\":\"i want 5000 trillion yen\",\"compensation\":50,\"contractor\":\"\",\"complete\":false}]

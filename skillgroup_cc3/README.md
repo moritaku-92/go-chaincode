@@ -86,4 +86,4 @@ peer chaincode invoke -n mycc3 -c '{"Args":["receive", "groupPurchase1", "c"]}' 
 
 ## response
 
-[{\"number\":\"groupPurchase0\",\"requester\":\"Jane Doe\",\"wish\":\"AYATAKA\",\"price\":10,\"contractores\":[\"Jane Doe\"],\"fund\":2,\"Complete\":false},{\"number\":\"groupPurchase1\",\"requester\":\"a\",\"wish\":\"Coca Cola\",\"price\":50,\"contractores\":[\"a\",\"b\"],\"fund\":3,\"Complete\":false},{\"number\":\"groupPurchase2\",\"requester\":\"c\",\"wish\":\"PEPSI\",\"price\":100,\"contractores\":[\"c\"],\"fund\":2,\"Complete\":false}]
+[{\"number\":\"groupPurchase0\",\"requester\":\"Jane Doe\",\"wish\":\"AYATAKA\",\"price\":10,\"contractores\":[\"Jane Doe\"],\"fund\":2,\"complete\":false},{\"number\":\"groupPurchase1\",\"requester\":\"a\",\"wish\":\"Coca Cola\",\"price\":50,\"contractores\":[\"a\",\"b\"],\"fund\":3,\"complete\":false},{\"number\":\"groupPurchase2\",\"requester\":\"c\",\"wish\":\"PEPSI\",\"price\":100,\"contractores\":[\"c\"],\"fund\":2,\"complete\":false}]

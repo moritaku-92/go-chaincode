@@ -37,7 +37,7 @@ type Purchase struct{
 	// 達成人数
 	Fund int `json:"fund"`
 	// 完了有無
-	Complete bool `json:"Complete"`
+	Complete bool `json:"complete"`
 }
 
 // 初期化処理
