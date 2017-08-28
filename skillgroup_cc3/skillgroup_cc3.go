@@ -37,7 +37,7 @@ type Purchase struct{
 	// 達成人数
 	Fund int `json:"fund"`
 	// 完了有無
-	Compleate bool `json:"compleate"`
+	Complete bool `json:"Complete"`
 }
 
 // 初期化処理
@@ -59,7 +59,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	purchase.Price = 100000
 	purchase.Contractores = append(purchase.Contractores, "Marty McFly")
 	purchase.Fund = 1
-	purchase.Compleate = true
+	purchase.Complete = true
 
 	purchaseJSON, err := json.Marshal(&purchase)
 	if err != nil {
@@ -154,7 +154,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	purchase.Price = price
 	purchase.Contractores = nil
 	purchase.Fund = fund
-	purchase.Compleate = false
+	purchase.Complete = false
 
 	// ここでjson化
 	purchaseJSON, err := json.Marshal(&purchase)
@@ -274,7 +274,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 			return shim.Error(errStr)
 		}
 		// 登録内容を完了にする
-		purchase.Compleate = true
+		purchase.Complete = true
 	}
 	// ---------------達成判定---------------
 

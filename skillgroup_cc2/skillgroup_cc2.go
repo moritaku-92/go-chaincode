@@ -36,7 +36,7 @@ type Mission struct{
 	// 受注者
 	Contractor string `json:"contractor"`
 	// 完了有無 → 完了したら任務自体削除するか要確認
-	Compleate bool `json:"compleate"`
+	Complete bool `json:"Complete"`
 }
 
 
@@ -59,7 +59,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	mission.MissionContent = "I want 5000 trillion yen!"
 	mission.Compensation = 1000000
 	mission.Contractor = "John Smith"
-	mission.Compleate = true
+	mission.Complete = true
 
 	// 構造体をjson化
 	missionJSON, err := json.Marshal(&mission)
@@ -159,7 +159,7 @@ func(t * SimpleChaincode) request(stub shim.ChaincodeStubInterface, args []strin
 	mission.MissionContent = args[1]
 	mission.Compensation = compensation
 	mission.Contractor = ""
-	mission.Compleate = false
+	mission.Complete = false
 	
 	// ここでjson化
 	missionJSON, err := json.Marshal(&mission)
@@ -362,7 +362,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	// 任務完了
-	mission.Compleate = true
+	mission.Complete = true
 
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)
