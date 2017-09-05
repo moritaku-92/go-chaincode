@@ -56,7 +56,7 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	mission.Number = "quest0"
 	mission.Requester = "Jane Doe"
 	mission.Acceptance = true
-	mission.MissionContent = "I want 5000 trillion yen!"
+	mission.MissionContent = "I want 5000 trillion yen"
 	mission.Compensation = 1000000
 	mission.Contractor = "John Smith"
 	mission.Complete = true
@@ -298,7 +298,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// 任務の取り消し
-	mission.Contractor = nil
+	mission.Contractor = ""
 	mission.Acceptance = false
 
 	// jsonエンコード
