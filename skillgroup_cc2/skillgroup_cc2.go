@@ -203,7 +203,7 @@ func(t * SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 	// 任務番号があるか判定
 	_, err1 := stub.GetState(missinoNo)
 	if err1 != nil {
-		return shim.Error("その任務番号はないで")
+		return shim.Error("その任務番号はないで",err)
 	}
 
 	// 任務削除
@@ -234,7 +234,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	missionCon, err := stub.GetState(missionNo)
 	if err != nil {
 		// 番号がなければエラーを返す
-		return shim.Error("その任務番号はないで")
+		return shim.Error("その任務番号はないで",err)
 	}
 
 	// 依頼者
@@ -246,7 +246,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	var mission = Mission{}
 	err0 := json.Unmarshal(missionCon, &mission)
 	if err0 != nil {
-		return shim.Error("構造体にぶっ込めんかった")
+		return shim.Error("構造体にぶっ込めんかった",err0)
 	}
 
 	// 受注者の登録
@@ -256,7 +256,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
-		return shim.Error("json化できなかった")
+		return shim.Error("json化できなかった",err)
 	}
 
 	// 登録
@@ -287,14 +287,14 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	missionCon, err := stub.GetState(missionNo)
 	if err != nil {
 		// 番号がなければエラーを返す
-		return shim.Error("その任務番号はないで")
+		return shim.Error("その任務番号はないで",err)
 	}
 
 	// 任務を取得し構造体にぶっ込む
 	var mission = Mission{}
 	err0 := json.Unmarshal(missionCon, &mission)
 	if err0 != nil {
-		return shim.Error("構造体にぶっ込めんかった")
+		return shim.Error("構造体にぶっ込めんかった",err0)
 	}
 
 	// 任務の取り消し
@@ -304,7 +304,7 @@ func(t * SimpleChaincode) cancel(stub shim.ChaincodeStubInterface, args []string
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
-		return shim.Error("json化できなかった")
+		return shim.Error("json化できなかった",err)
 	}
 
 	// 登録
@@ -335,14 +335,14 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	missionCon, err := stub.GetState(missionNo)
 	if err != nil {
 		// 番号がなければエラーを返す
-		return shim.Error("その任務番号はないで")
+		return shim.Error("その任務番号はないで",err)
 	}
 
 	// 任務を取得し構造体にぶっ込む
 	var mission = Mission{}
 	err0 := json.Unmarshal(missionCon, &mission)
 	if err0 != nil {
-		return shim.Error("構造体にぶっ込めんかった")
+		return shim.Error("構造体にぶっ込めんかった",err0)
 	}
 	
 	/*
@@ -367,7 +367,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&mission)
 	if err != nil {
-		return shim.Error("json化できなかった")
+		return shim.Error("json化できなかった",err)
 	}
 
 	// 登録
