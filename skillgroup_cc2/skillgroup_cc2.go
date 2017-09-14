@@ -353,7 +353,7 @@ func(t * SimpleChaincode) complete(stub shim.ChaincodeStubInterface, args []stri
 	invokeArgs := util.ToChaincodeArgs("move", mission.Requester, mission.Contractor, strconv.Itoa(mission.Compensation))
 	
 	// chaincodeName, json, channel で設定する↓
-	response := stub.InvokeChaincode("mycc", invokeArgs, "myc")
+	response := stub.InvokeChaincode("mycc", invokeArgs, "mychannel")
 
 	if response.Status != shim.OK {
 		errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
