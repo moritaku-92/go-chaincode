@@ -29,13 +29,14 @@ func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
-
+	logger.Info("2nd 2nd 2nd 2nd")
 	// 渡された値の1・3番目が数字であるか判定
 	A = args[0]
 	Aval, err = strconv.Atoi(args[1])
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
+	logger.Info("3rd 3rd 3rd 3rd")
 	B = args[2]
 	Bval, err = strconv.Atoi(args[3])
 	if err != nil {
