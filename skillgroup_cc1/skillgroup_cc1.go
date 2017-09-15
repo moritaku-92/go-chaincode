@@ -19,7 +19,7 @@ type SimpleChaincode struct {}
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-	logger.Info skill group cc1 Init ###########")
+	logger.Info("########### skill group cc1 Init ###########")
 
 	args := stub.GetStringArgs()
 	var A, B string // 2名のユーザ
