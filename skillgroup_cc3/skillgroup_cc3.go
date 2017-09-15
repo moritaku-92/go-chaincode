@@ -229,7 +229,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	groupPurchase, err := stub.GetState(groupPurchaseNo)
 	if err != nil {
 		// 番号がなければエラーを返す
-		return shim.Error("その依頼番号はないで")
+		return shim.Error(err.Error())
 	}
 
 	// 受注者
@@ -240,7 +240,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	var purchase = Purchase{}
 	err = json.Unmarshal(groupPurchase, &purchase)
 	if err != nil {
-		return shim.Error("構造体にぶっ込めんかった")
+		return shim.Error(err.Error())
 	}
 
 	// 受注者の登録
@@ -260,18 +260,18 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 			if response.Status != shim.OK {
 				errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
 				fmt.Printf(errStr)
-				return shim.Error(errStr)
+				return shim.Error(errStr.Error())
 			}
 		}
 		// 提案者にお金渡す処理
 		add := purchase.Price * purchase.Fund
 		invokeArgs := util.ToChaincodeArgs("addMoney", purchase.Requester, strconv.Itoa(add))
-		response := stub.InvokeChaincode("mycc", invokeArgs, "mychannel")
+		response := stub.InvokeChaincode("skillgroup_cc1", invokeArgs, "mychannel")
 		
 		if response.Status != shim.OK {
 			errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
 			fmt.Printf(errStr)
-			return shim.Error(errStr)
+			return shim.Error(errStr.Error())
 		}
 		// 登録内容を完了にする
 		purchase.Complete = true
@@ -281,7 +281,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 	// jsonエンコード
 	outputJSON, err := json.Marshal(&purchase)
 	if err != nil {
-		return shim.Error("json化できなかった")
+		return shim.Error(err.Error())
 	}
 
 	// 登録
