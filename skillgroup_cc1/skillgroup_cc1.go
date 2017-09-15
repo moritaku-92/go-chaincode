@@ -19,26 +19,27 @@ type SimpleChaincode struct {}
 
 // 初期化処理
 func(t * SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-	logger.Info("########### skill group cc1 Init ###########")
+	logger.Info skill group cc1 Init ###########")
 
 	args := stub.GetStringArgs()
 	var A, B string // 2名のユーザ
 	var Aval, Bval int // 2つの値
 	var err error
 	
-	if len(args) != 4 {
+	if len(args) != 5 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
 	
-	// 渡された値の1・3番目が数字であるか判定
-	A = args[0]
-	Aval, err = strconv.Atoi(args[1])
+	// 渡された値の2・4番目が数字であるか判定
+	// args[0]は処理名称（init等）が入るため不要
+	A = args[1]
+	Aval, err = strconv.Atoi(args[2])
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
 	
-	B = args[2]
-	Bval, err = strconv.Atoi(args[3])
+	B = args[3]
+	Bval, err = strconv.Atoi(args[4])
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
