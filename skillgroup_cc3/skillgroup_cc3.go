@@ -260,7 +260,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 			if response.Status != shim.OK {
 				errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
 				fmt.Printf(errStr)
-				return shim.Error(errStr.Error())
+				return shim.Error(errStr)
 			}
 		}
 		// 提案者にお金渡す処理
@@ -271,7 +271,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 		if response.Status != shim.OK {
 			errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
 			fmt.Printf(errStr)
-			return shim.Error(errStr.Error())
+			return shim.Error(errStr)
 		}
 		// 登録内容を完了にする
 		purchase.Complete = true
