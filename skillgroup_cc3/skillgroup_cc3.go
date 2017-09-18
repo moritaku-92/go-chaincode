@@ -255,7 +255,7 @@ func(t * SimpleChaincode) receive(stub shim.ChaincodeStubInterface, args []strin
 		for _, user := range purchase.Contractores {
 			// 価格分引く処理
 			invokeArgs := util.ToChaincodeArgs("addMoney", user, strconv.Itoa(dif))
-			response := stub.InvokeChaincode("mycc", invokeArgs, "mychannel")
+			response := stub.InvokeChaincode("skillgroup_cc1", invokeArgs, "mychannel")
 
 			if response.Status != shim.OK {
 				errStr := fmt.Sprintf("Failed to invoke chaincode. Got error: %s", string(response.Payload))
